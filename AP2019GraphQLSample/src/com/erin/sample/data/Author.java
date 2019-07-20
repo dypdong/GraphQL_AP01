@@ -45,10 +45,6 @@ public class Author {
 					// use author-id from container QUARY-BOOKDATA as input
 					Container adc = authorChannel.createContainer("QUARY-AUTHRDATA");
 					adc.putString(authorId);
-				
-					//Channel currentChannel = task.getChannel("QUARY-BOOK");
-					// get the data in channel which is written by java
-					//Container adcj = currentChannel.getContainer("QUARY-AUTHRDATA");
 					
 					// link to cobol program FCAUTHR with channel QUARY-BOOK, container QUARY-AUTHRDATA
 					Program QuaryAuthor = new Program();

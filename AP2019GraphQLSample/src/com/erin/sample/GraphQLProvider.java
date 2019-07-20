@@ -23,32 +23,16 @@ public class GraphQLProvider {
     @Autowired
     GraphQLDataFetchers graphQLDataFetchers;
 
-    //private GraphQL graphQL;
-
-    /*
-    @PostConstruct
-    public void init() throws IOException {
-        //这是初始化方法，读取graphqls配置文件
-        URL url = Resources.getResource("schema.graphqls");
-        String sdl = Resources.toString(url, Charsets.UTF_8);
-        //根据配置文件，初始化组装了一个服务的示例 instace
-        GraphQLSchema graphQLSchema = buildSchema(sdl);
-        this.graphQL = GraphQL.newGraphQL(graphQLSchema).build();
-    }
-    */
-
     @Bean
     public GraphQLSchema getGraphQLSchema() throws IOException {
-        //这是初始化方法，读取graphqls配置文件
-        URL url = Resources.getResource("schema.graphqls");
+        // Read the schema
+    	URL url = Resources.getResource("schema.graphqls");
         String sdl = Resources.toString(url, Charsets.UTF_8);
-        //根据配置文件，初始化组装了一个服务的示例 instace
-        System.out.println("GraphQLSchema 已经初始化");
         return buildSchema(sdl);
     }
 
     private GraphQLSchema buildSchema(String sdl) {
-        //初始化Schema
+        //initial Schema
         TypeDefinitionRegistry typeRegistry = new SchemaParser().parse(sdl);
         RuntimeWiring runtimeWiring = buildWiring();
         SchemaGenerator schemaGenerator = new SchemaGenerator();
@@ -58,15 +42,10 @@ public class GraphQLProvider {
     private RuntimeWiring buildWiring() {
         return RuntimeWiring.newRuntimeWiring()
                 .type(newTypeWiring("Query")
-                        .dataFetcher("bookById", graphQLDataFetchers.getBookByIdDataFetcher())) //这里是处理bookById这个参数的回调方法
+                        .dataFetcher("bookById", graphQLDataFetchers.getBookByIdDataFetcher()))
                 .type(newTypeWiring("Book")
                         .dataFetcher("author", graphQLDataFetchers.getAuthorDataFetcher()))
                 .build();
     }
-
-    /*@Bean
-    public GraphQL graphQL() {
-        return graphQL;
-    }*/
 
 }
